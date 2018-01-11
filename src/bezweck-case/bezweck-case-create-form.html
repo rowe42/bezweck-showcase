@@ -1,0 +1,77 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-divider/paper-divider.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+
+<link rel="import" href="bezweck-case-basics-form.html">
+<link rel="import" href="bezweck-case-property-form.html">
+<link rel="import" href="bezweck-case-people-form.html">
+<link rel="import" href="bezweck-case-activities-form.html">
+<link rel="import" href="bezweck-case-uploads-form.html">
+
+<dom-module id="bezweck-case-create-form">
+    <template>
+        <style></style>
+        <iron-ajax id="httpbin" url="https://httpbin.org/post" method="POST" body="{{foo}}" handle-as="json" on-response="_handleResponse" debounce-duration="300"></iron-ajax>
+        <iron-form id="iform">
+            <form>
+                <div class="circle"><iron-icon icon="bezweck-icons:basecamp"></iron-icon></div>
+                <h1>Neuer Fall</h1>
+                <bezweck-case-basics-form data="{{foo}}"></bezweck-case-basics-form>
+                <br/>
+                <paper-divider></paper-divider>
+                <br/>
+                <bezweck-case-property-form data="{{foo}}"></bezweck-case-property-form>
+                <br/>
+                <paper-divider></paper-divider>
+                <br/>
+                <bezweck-case-people-form data="{{foo}}"></bezweck-case-people-form>
+                <br/>
+                <paper-divider></paper-divider>
+                <br/>
+                <bezweck-case-activities-form data="{{foo}}"></bezweck-case-activities-form>
+                <br/>
+                <bezweck-case-uploads-form data="{{foo}}"></bezweck-case-uploads-form>
+                <br/>
+                <paper-button on-tap="_sendForm" raised>Submit</paper-button>
+            </form>
+        </iron-form>
+    </template>
+    <script>
+        class BezweckCaseCreateForm extends Polymer.Element {
+            static get is() {
+                return 'bezweck-case-create-form';
+            }
+
+            static get properties() {
+                return {
+                    foo: {
+                        type: Object,
+                        value() {
+                            return {}
+                        }
+                    }
+                }
+            }
+
+            constructor() {
+                super();
+            }
+
+            _sendForm() {
+                console.log(this.$.iform.validate());
+                this.foo = JSON.stringify(this.foo);
+                console.log(this.foo);
+                this.$.httpbin.generateRequest();
+                this.$.iform.reset();
+            }
+
+            _handleResponse(e) {
+                console.log(JSON.stringify(e.detail.response))
+            }
+        }
+
+        customElements.define(BezweckCaseCreateForm.is, BezweckCaseCreateForm);
+    </script>
+</dom-module>

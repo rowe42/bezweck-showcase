@@ -1,0 +1,134 @@
+<link rel="import" href="../../bower_components/nebula-i18n/polyglot.html">
+
+<script>
+    /**
+     * Behavior, um einem beliebigen Element i18n Eigenschaften zu geben. Dafür
+     * muss das Element die Properties 'domain' und 'entity' setzen:
+     *
+     * ```javascript
+     *  _domain: {
+     *    type: String,
+     *    value: 'animad'
+     *  },
+     *  _entity: {
+     *    type: String,
+     *    value: 'enclosure'
+     *  }
+     * ```
+     *
+     * Über die Methode 't(KEY)' können die Übersetzungen aufgelöst werden:
+     * ```html
+     *   <paper-input
+     *       id="enclosure-cleaningTime"
+     *       label="[[t('cleaningTime')]]"
+     *       value="{{data.cleaningTime}}"
+     *       error-message="[[t('cleaningTime_error')]]">
+     *   </paper-input>
+     * ```
+     *
+     * @polymerMixinClass
+     */
+    /* @polymerMixin */
+    let AnimadI18nBehavior = (superClass) => class extends superClass {
+        static get properties() {
+            return {
+                /**
+                 * Das Language Objekt zum Ermitteln des aktuell verwendeten Locales.
+                 * Dieses Element muss zentral (am besten im *-app Element) vorhanden sein.
+                 * Es wird nur einmal benötigt.
+                 */
+                lang: {
+                    type: String,
+                    value() {
+                        var l = document.querySelector('bezweck-app').shadowRoot.querySelector('#language');
+                        if(!l) {
+                            console.warn("WARNING: Couldn't find element 'nebula-language' with id 'language' in your bezweck-app element! Please fix this to use i18n.");
+                        }
+                        return l.lang;
+                    },
+                },
+                /**
+                 * Das Recource Objekt mit den key/value Paaren. Dieses Element muss
+                 * zentral (am besten im *-app Element) vorhanden sein. es wird nur
+                 * einmal benötigt. Damit wird verhindert, dass die Resourcen Datei
+                 * mehrfach eingelesen (und auch im Speicher verwaltet) wird, wenn sie
+                 * von unterschiedlichen Elementen verwendet wird.
+                 */
+                resources: {
+                    type: Object,
+                    value() {
+                        var r = document.querySelector('bezweck-app').shadowRoot.querySelector('#locales');
+                        if(!r) {
+                            console.warn("WARNING: Couldn't find element 'nebula-resources' with id 'locales' in your bezweck-app element! Please fix this to use i18n.");
+                        }
+                        return r.resources;
+                    },
+                },
+                /*
+                 * Die Instanz von polyglot.js (eine i18n lib von airnb)
+                 */
+                _polyglot: {
+                    type: Object,
+                },
+            };
+        }
+
+        /**
+         * Löst einen i18n Schlüssel in den Wert (in der entsprechenden Sprache) auf.
+         *
+         * @param {string} key Der Schlüssel als String
+         * @return {string} Der Wert des Schlüssels in der aktiven Sprache
+         */
+        t(key) {
+            if(!this._polyglot) {
+                this._init();
+            }
+            var value = this._polyglot.t(key);
+            return value;
+        }
+
+        /**
+         * Löst einen i18n Schlüssel in den Wert (in der entsprechenden Sprache) auf. Dabei
+         * kann er Werte in der Übersetzung ersetzen. Beispiel:
+         * ...
+         * "error": "Es ist ein Fehler aufgetreten (code '%{code}')!"
+         * ...
+         *
+         * Verwendet wird das so:
+         * t("error", {code: "404"});
+         *
+         * @param {string} key - Der Schlüssel als String
+         * @param {object} extension - Ein Objekt an werten, die in die Nachricht eingesetzt werden sollen.
+         * @return {string} Der Wert des Schlüssels in der aktiven Sprache
+         */
+        t(key, extension) {
+            if(!this._polyglot) {
+                this._init();
+            }
+            var value = this._polyglot.t(key, extension);
+            return value;
+        }
+
+        /*
+         * Initialisiert bei Gebrauch das Polyglot Objekt einmal. Das Objekt
+         * wird dann im '_polyglot' Property gespeichert und steht somit über
+         * gesamten Lebenscyklus der Elements zur Verfügung.
+         */
+        _init() {
+            if (this.lang && this.resources && this._domain && this._entity) {
+                var subtree = this.resources[this.lang][this._domain][this._entity];
+                this._polyglot = new Polyglot({
+                    phrases: subtree
+                });
+//                if(this._polyglot) {
+//                    console.log('initialized i18n');
+//                }
+            } else {
+                this._polyglot = new Polyglot({
+                    phrases: {}
+                });
+                console.warn("WARNING: there is an error in your properties.\n lang -> " + this.lang + "\n resources -> " + this.resources + "\n domain -> " + this._domain + "\n entity -> " + this._entity);
+            }
+        }
+    }
+</script>

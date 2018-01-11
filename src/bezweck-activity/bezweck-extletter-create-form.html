@@ -1,0 +1,70 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-divider/paper-divider.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-divider/paper-divider.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+
+<link rel="import" href="bezweck-extletter-case-form.html">
+
+<dom-module id="bezweck-extletter-create-form">
+    <template>
+        <style></style>
+        <iron-ajax id="httpbin" url="https://httpbin.org/post" method="POST" body="{{foo}}" handle-as="json" on-response="_handleResponse" debounce-duration="300"></iron-ajax>
+        <iron-form id="iform">
+            <form>
+                <div class="circle"><iron-icon icon="bezweck-icons:basecamp"></iron-icon></div>
+                <h1>Neuer externer Brief</h1>
+
+                <div>TODO Content</div>
+
+                <br/>
+                <paper-divider></paper-divider>
+                <br/>
+
+                <bezweck-extletter-case-form></bezweck-extletter-case-form>
+                <br/>
+                <paper-divider></paper-divider>
+                <br/>
+
+                <paper-button on-tap="_sendForm" raised>Submit</paper-button>
+            </form>
+        </iron-form>
+    </template>
+    <script>
+        class BezweckExtletterCreateForm extends Polymer.Element {
+            static get is() {
+                return 'bezweck-extletter-create-form';
+            }
+
+            static get properties() {
+                return {
+                    foo: {
+                        type: Object,
+                        value() {
+                            return {}
+                        }
+                    }
+                }
+            }
+
+            constructor() {
+                super();
+            }
+
+            _sendForm() {
+                console.log(this.$.iform.validate());
+                this.foo = JSON.stringify(this.foo);
+                console.log(this.foo);
+                this.$.httpbin.generateRequest();
+                this.$.iform.reset();
+            }
+
+            _handleResponse(e) {
+                console.log(JSON.stringify(e.detail.response))
+            }
+        }
+
+        customElements.define(BezweckExtletterCreateForm.is, BezweckExtletterCreateForm);
+    </script>
+</dom-module>

@@ -1,0 +1,41 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
+<link rel="import" href="../bezweck-activity/bezweck-extletters-list.html">
+
+
+
+<dom-module id="bezweck-case-activities-form">
+    <template>
+        <style></style>
+        <h2>Aktivitäten</h2>
+
+        <bezweck-extletters-list></bezweck-extletters-list>
+
+    </template>
+    <br>
+
+    <script>
+        class BezweckCaseActivitiesForm extends Polymer.Element {
+            static get is() {
+                return 'bezweck-case-activities-form';
+            }
+
+            static get properties() {
+                return {
+                    activities: {
+                        type: Object,
+                        value() {
+                            return {}
+                        }
+                    }
+                }
+            }
+        }
+
+        customElements.define(BezweckCaseActivitiesForm.is, BezweckCaseActivitiesForm);
+    </script>
+</dom-module>

@@ -1,0 +1,45 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bezweck-icons.html">
+
+<link rel="import" href="../shared-styles.html">
+
+
+<!-- GENERATOR pattern: [DOMAINNAME]-[ENTITYNAME]-view -->
+<dom-module id="bezweck-cases-list-view">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+
+                padding: 10px;
+            }
+
+            .animad-keeper-view-content {
+                display: grid;
+                grid-row-gap: 3em;
+            }
+        </style>
+
+        <div class="card">
+            <div class="circle"><iron-icon icon="bezweck-icons:folder"></iron-icon></div>
+            <h1>Fallbearbeitung</h1>
+            <h2>Liste der Fälle</h2>
+            <bezweck-cases-list></bezweck-cases-list>
+
+        </div>
+    </template>
+
+    <script>
+        // GENERATOR pattern (camel case): [DOMAINNAME][ENTITYNAME]View
+        class BezweckCasesListView extends Polymer.Element {
+            // GENERATOR pattern: [DOMAINNAME]-[ENTITYNAME]-view
+            static get is() {
+                return 'bezweck-cases-list-view';
+            }
+        }
+
+        // GENERATOR pattern (camel case): [DOMAINNAME][ENTITYNAME]View
+        window.customElements.define(BezweckCasesListView.is, BezweckCasesListView);
+    </script>
+</dom-module>

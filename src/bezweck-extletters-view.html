@@ -1,0 +1,104 @@
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/nebula-i18n/nebula-i18n.html">
+<!-- custom components -->
+
+<link rel="import" href="bezweck-case/bezweck-cases-list.html">
+
+<link rel="import" href="behaviors/animad-i18n-behavior.html">
+<link rel="import" href="behaviors/mixin.html">
+<link rel="import" href="bezweck-icons.html">
+
+<link rel="import" href="bezweck-activity/bezweck-extletter-create-view.html">
+<link rel="import" href="bezweck-activity/bezweck-extletters-list-view.html">
+
+<link rel="import" href="shared-styles.html">
+
+<!-- GENERATOR pattern: [DOMAINNAME]-[ENTITYNAME]-view -->
+<dom-module id="bezweck-extletters-view">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+                padding: 10px;
+            }
+        </style>
+
+        <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}">
+        </app-route>
+
+        <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404">
+            <bezweck-extletters-list-view name=""></bezweck-extletters-list-view>
+            <bezweck-extletter-create-view name="create"></bezweck-extletter-create-view>
+        </iron-pages>
+
+
+    </template>
+
+    <script>
+        // GENERATOR pattern (camel case): [DOMAINNAME][ENTITYNAME]View
+        class BezweckExtlettersView extends mix(Polymer.Element).with(AnimadI18nBehavior) {
+            // GENERATOR pattern: [DOMAINNAME]-[ENTITYNAME]-view
+            static get is() {
+                return 'bezweck-extletters-view';
+            }
+
+            static get properties() {
+                return {
+                    route: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    page: {
+                        type: String,
+                        reflectToAttribute: true
+                    },
+                    routeData: Object,
+                    subroute: String,
+                    // This shouldn't be neccessary, but the Analyzer isn't picking up
+                    // Polymer.Element#rootPath
+                    rootPath: String,
+                    /*
+                     * Das '_domain' property wird benötigt, um" den richtigen Pfad 
+                     * zu den i18n Werten zu erzeugen. Es wird in jedem Element 
+                     * benötigt, in dem die I18nBehavior verwendet wird. Im Falle 
+                     * einer view ist der Wert IMMER 'view'.
+                     */
+                    _domain: {
+                        type: String,
+                        value: 'view'
+                    },
+                    /*
+                     * Das '_entity' property wird benötigt, um den richtigen Pfad 
+                     * zu den i18n Werten zu erzeugen. Es wird in jedem Element 
+                     * benötigt, in dem die I18nBehavior verwendet wird. Im Falle 
+                     * einer view ist der Wert immer der Präfix, der im Namen der view
+                     * vor '*-view' steht. Bei animad-enclosures-view.html also 
+                     * 'animad-enclosures'.
+                     */
+                    _entity: {
+                        type: String,
+                        value: 'bezweck-cases'
+                    }
+                }
+            }
+
+
+            static get observers() {
+                return [
+                    '_routePageChanged(routeData.page)',
+                ];
+            }
+
+            _routePageChanged(page) {
+                this.page = page || '';
+            }
+
+        }
+
+        // GENERATOR pattern (camel case): [DOMAINNAME][ENTITYNAME]View
+        window.customElements.define(BezweckExtlettersView.is, BezweckExtlettersView);
+    </script>
+</dom-module>

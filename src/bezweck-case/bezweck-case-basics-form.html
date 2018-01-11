@@ -1,0 +1,62 @@
+<link rel="import" href="../../bower_components/iron-collapse-button/iron-collapse-button.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
+<dom-module id="bezweck-case-basics-form">
+    <template>
+        <style></style>
+        <iron-collapse-button opened>
+            <div slot="collapse-trigger">
+                <h2>Basics</h2>
+            </div>
+            <div slot="collapse-content">
+                Fall-ID: Z17-5848 <br/>
+                <paper-dropdown-menu id="case-type" label="Fallart*" value="{{data.casetype}}" required>
+                    <paper-listbox slot="dropdown-content">
+                        <paper-item>EH</paper-item>
+                        <paper-item>ZE</paper-item>
+                        <paper-item>§5</paper-item>
+                        <paper-item>WoGG</paper-item>
+                        <paper-item>AsylbLG</paper-item>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+                <paper-input type="date" name="creationdate" required label="Anlagedatum (yyyy-mm-dd)" value="{{data.creationdate}}" auto-validate required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}"></paper-input>
+                <paper-input type="text" name="specials" required label="Fallbesonderheiten" value="{{data.specials}}" minlength="3" maxlength="500"></paper-input>
+                <paper-dropdown-menu id="gremium" label="Gremium beteiligt" value="{{data.gremium}}" required>
+                    <paper-listbox slot="dropdown-content">
+                        <paper-item>Ja</paper-item>
+                        <paper-item>Nein</paper-item>
+                        <paper-item>Nicht erforderlich</paper-item>
+                    </paper-listbox>
+                </paper-dropdown-menu>
+                <paper-input type="text" name="gremiumtext" required label="Gremium Beteiligung" value="{{data.gremiumtext}}" minlength="3" maxlength="100"></paper-input>
+                <paper-input type="text" name="team" required label="Team" value="{{data.team}}" minlength="3" maxlength="10"></paper-input>
+
+                <br>
+            </div>
+        </iron-collapse-button>
+    </template>
+    <script>
+        class BezweckCaseBasicsForm extends Polymer.Element {
+            static get is() {
+                return 'bezweck-case-basics-form';
+            }
+
+            static get properties() {
+                return {
+                    data: {
+                        type: Object,
+                        value() {
+                            return {}
+                        }
+                    }
+                }
+            }
+        }
+
+        customElements.define(BezweckCaseBasicsForm.is, BezweckCaseBasicsForm);
+    </script>
+</dom-module>

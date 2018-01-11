@@ -1,0 +1,41 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/vaadin-upload/vaadin-upload.html">
+
+
+
+<dom-module id="bezweck-case-uploads-form">
+    <template>
+        <style></style>
+        <h2>Anlagen</h2>
+
+
+        <vaadin-upload files="{{files}}"></vaadin-upload>
+
+    </template>
+    <br>
+
+    <script>
+        class BezweckCaseUploadsForm extends Polymer.Element {
+            static get is() {
+                return 'bezweck-case-uploads-form';
+            }
+
+            static get properties() {
+                return {
+                    activities: {
+                        type: Object,
+                        value() {
+                            return {}
+                        }
+                    }
+                }
+            }
+        }
+
+        customElements.define(BezweckCaseUploadsForm.is, BezweckCaseUploadsForm);
+    </script>
+</dom-module>

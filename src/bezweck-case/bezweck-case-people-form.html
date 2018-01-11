@@ -1,0 +1,43 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
+<link rel="import" href="../bezweck-people/bezweck-people-simple-relation.html">
+
+<dom-module id="bezweck-case-people-form">
+    <template>
+        <style></style>
+        <h2>Beteiligte</h2>
+
+        <bezweck-people-simple-relation
+            data="{{people}}"
+            source-url="http://demo6512140.mockable.io/keepers"
+            text-property="lastname"
+            value-property="id"
+            preload></bezweck-people-simple-relation>
+    </template>
+    <br>
+
+    <script>
+        class BezweckCasePeopleForm extends Polymer.Element {
+            static get is() {
+                return 'bezweck-case-people-form';
+            }
+
+            static get properties() {
+                return {
+                    people: {
+                        type: Object,
+                        value() {
+                            return {}
+                        }
+                    }
+                }
+            }
+        }
+
+        customElements.define(BezweckCasePeopleForm.is, BezweckCasePeopleForm);
+    </script>
+</dom-module>

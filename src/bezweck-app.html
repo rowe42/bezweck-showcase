@@ -1,0 +1,265 @@
+<link rel="import" href="../bower_components/iron-collapse-button/iron-collapse-button.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../bower_components/nebula-i18n/nebula-i18n.html">
+
+<!-- GENERATOR pattern: [DOMAINNAME]-icons.html -->
+<link rel="import" href="bezweck-icons.html">
+
+<!-- GENERATOR pattern: [DOMAINNAME]-[ENTITYNAME]-view.html -->
+<!-- GENERATOR hier müssen alle modellierten views rein-->
+<!--<link rel="lazy-import" href="animad-keepers-view.html">
+<link rel="lazy-import" href="animad-animals-view.html">
+<link rel="lazy-import" href="animad-enclosures-view.html">
+<link rel="lazy-import" href="animad-security-view.html">
+<link rel="lazy-import" href="animad-view404.html">-->
+
+<link rel="lazy-import" href="bezweck-home-view.html">
+<link rel="lazy-import" href="bezweck-cases-view.html">
+<link rel="lazy-import" href="bezweck-extletters-view.html">
+
+<!-- GENERATOR pattern: [DOMAINNAME]-app -->
+<dom-module id="bezweck-app">
+    <template>
+        <style>
+            :host {
+                --app-primary-color: #cccc00;
+                --app-secondary-color: #cc6600;
+
+
+            }
+
+            app-header {
+                color: #ffffff;
+                background-color: var(--app-primary-color);
+            }
+
+            app-header paper-icon-button {
+                --paper-icon-button-ink-color: white;
+            }
+
+            .drawer-content {
+                margin-top: 80px;
+                height: calc(100% - 80px);
+                overflow: auto;
+            }
+
+            .main-content {
+                margin-top: 80px;
+            }
+
+            .drawer-list {
+                margin-top: 80px;
+            }
+
+            .drawer-list a {
+                display: block;
+                padding: 0 16px;
+                text-decoration: none;
+                color: var(--app-secondary-color);
+                line-height: 40px;
+            }
+
+            .drawer-list a.iron-selected {
+                color: #aa00ff;
+                font-weight: bold;
+            }
+        </style>
+
+        <app-location route="{{route}}" url-space-regex="^[[rootPath]]">
+        </app-location>
+
+        <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}">
+        </app-route>
+
+        <!-- i18n -->
+        <nebula-language
+            id="language"
+            supported='["en", "de"]'
+            lang="{{lang}}">
+        </nebula-language>
+        <nebula-resources
+            id="locales"
+            file="bezweck_locales"
+            path="/locales"
+            resources="{{resources}}">
+        </nebula-resources>
+
+        <app-header-layout>
+
+            <app-header fixed effects="waterfall" slot="header">
+                <app-toolbar>
+                    <paper-icon-button id="toggle" icon="bezweck-icons:menu"></paper-icon-button>
+                    <div main-title>
+                        <b>Bezweck</b> App</div>
+                </app-toolbar>
+            </app-header>
+
+            <app-drawer-layout id="drawerLayout">
+
+                <app-drawer slot="drawer" id="drawer">
+                    <div class="drawer-content">
+                        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+                            <!-- GENERATOR pattern: ...[ENTITYNAME]-view">[ENTITYNAME]</a> -->
+                            <!-- GENERATOR TODO - der Name und Icon sollte aus einer i18n Liste kommen -->
+                            <paper-item>
+                                <iron-icon icon="bezweck-icons:home"></iron-icon>
+                                <a name="home-view" href="[[rootPath]]home"><b>Home/Dashboard</b></a>
+                            </paper-item>
+                            <paper-item>
+                                <iron-icon icon="bezweck-icons:folder"></iron-icon>
+                                <a name="cases-view" href="[[rootPath]]cases"><b>Fallbearbeitung</b></a>
+                            </paper-item>
+                            <iron-collapse-button>
+                                <div slot="collapse-trigger">                                    
+                                    <paper-item>                                        
+                                        <b>Aktivitäten</b>
+                                    </paper-item>
+                                </div>
+                                <div slot="collapse-content">
+                                    <paper-item>
+                                        <iron-icon icon="bezweck-icons:drafts"></iron-icon>
+                                        <a name="extletters-view" href="[[rootPath]]extletters">Externe Schreiben</a>
+                                    </paper-item>
+                                    <paper-item>
+                                        <iron-icon icon="bezweck-icons:drafts"></iron-icon>
+                                        <a name="extletters-view" href="[[rootPath]]extletters">Interne Schreiben</a>
+                                    </paper-item>
+                                    <paper-item>
+                                        <iron-icon icon="bezweck-icons:supervisor-account"></iron-icon>
+                                        <a name="extletters-view" href="[[rootPath]]extletters">Anhörung</a>
+                                    </paper-item>
+                                    <paper-item>
+                                        <iron-icon icon="bezweck-icons:supervisor-account"></iron-icon>
+                                        <a name="extletters-view" href="[[rootPath]]extletters">Rechtsmittel</a>
+                                    </paper-item>
+                                    <paper-item>
+                                        <iron-icon icon="bezweck-icons:drafts"></iron-icon>
+                                        <a name="extletters-view" href="[[rootPath]]extletters">Bescheid</a>
+                                    </paper-item>
+                                    <paper-item>
+                                        <iron-icon icon="bezweck-icons:supervisor-account"></iron-icon>
+                                        <a name="extletters-view" href="[[rootPath]]extletters">Wiedervorlage</a>
+                                    </paper-item>
+                                    <paper-item>
+                                        <iron-icon icon="bezweck-icons:pencil"></iron-icon>
+                                        <a name="extletters-view" href="[[rootPath]]extletters">Meldung</a>
+                                    </paper-item>
+                                    <paper-item>
+                                        <iron-icon icon="bezweck-icons:pencil"></iron-icon>
+                                        <a name="extletters-view" href="[[rootPath]]extletters">Antrag</a>
+                                    </paper-item>
+                                    <paper-item>
+                                        <iron-icon icon="bezweck-icons:folder"></iron-icon>
+                                        <a name="extletters-view" href="[[rootPath]]extletters">Altfall</a>
+                                    </paper-item>
+                                    <paper-item>
+                                        <iron-icon icon="bezweck-icons:terrain"></iron-icon>
+                                        <a name="extletters-view" href="[[rootPath]]extletters">Ortsermittlung</a>
+                                    </paper-item>
+                                </div>
+                            </iron-collapse-button>
+                            <paper-item>
+                                <iron-icon icon="bezweck-icons:people"></iron-icon>
+                                <a name="cases-view" href="[[rootPath]]cases"><b>Beteiligte</b></a>
+                            </paper-item>
+                            <paper-item>
+                                <iron-icon icon="bezweck-icons:basecamp"></iron-icon>
+                                <a name="cases-view" href="[[rootPath]]cases"><b>Anwesen</b></a>
+                            </paper-item>              
+                        </iron-selector>
+                    </div>
+                </app-drawer>
+
+                <iron-pages selected="[[page]]" attr-for-selected="name" fallback-selection="view404" role="main">
+                    <!-- GENERATOR pattern: <[DOMAINNAME][ENTITYNAME]-view name="[ENTITYNAME]-view"></[DOMAINNAME][ENTITYNAME]-view> -->
+                    <bezweck-home-view name="home" route="{{subroute}}"></bezweck-home-view>
+                    <bezweck-cases-view name="cases" route="{{subroute}}"></bezweck-cases-view>
+                    <bezweck-extletters-view name="extletters" route="{{subroute}}"></bezweck-extletters-view>
+                    <!--<animad-view404 name="view404"></animad-view404>-->
+                </iron-pages>
+
+            </app-drawer-layout>
+
+        </app-header-layout>
+
+
+    </template>
+
+    <script>
+        // GENERATOR pattern (camel case): [DOMAINNAME]App
+        class BezweckApp extends Polymer.Element {
+            // GENERATOR pattern [DOMAINNAME]-app
+            static get is() {
+                return 'bezweck-app';
+            }
+
+            static get properties() {
+                return {
+                    page: {
+                        type: String,
+                        reflectToAttribute: true,
+                        observer: '_pageChanged',
+                    },
+                    routeData: Object,
+                    subroute: String,
+                    // This shouldn't be neccessary, but the Analyzer isn't picking up
+                    // Polymer.Element#rootPath
+                    rootPath: String,
+                };
+            }
+
+            static get observers() {
+                return [
+                    '_routePageChanged(routeData.page)',
+                ];
+            }
+
+            _routePageChanged(page) {
+                // If no page was found in the route data, page will be an empty string.
+                // Default to 'view1' in that case.
+                // GENERATOR ------
+                // GENERATOR pattern (camel case): [ENTITYNAME]-view
+                // GENERATOR Erster Eintrag in der Liste der views
+                this.page = page || 'home';
+
+                // Close a non-persistent drawer when the page & route are changed.
+                if (!this.$.drawer.persistent) {
+                    this.$.drawer.close();
+                }
+            }
+
+            _pageChanged(page) {
+                // Load page import on demand. Show 404 page if fails
+                // GENERATOR ------
+                // GENERATOR pattern (camel case): [DOMAINNAME]
+                var resolvedPageUrl = this.resolveUrl('bezweck-' + page + '-view.html');
+                Polymer.importHref(
+                        resolvedPageUrl,
+                        null,
+                        this._showPage404.bind(this),
+                        true);
+            }
+
+            _showPage404() {
+                this.page = 'view404';
+            }
+        }
+
+        // GENERATOR pattern (camel case): [DOMAINNAME]App
+        window.customElements.define(BezweckApp.is, BezweckApp);
+    </script>
+</dom-module>

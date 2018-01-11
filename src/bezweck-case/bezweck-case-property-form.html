@@ -1,0 +1,43 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+
+<link rel="import" href="../bezweck-property/bezweck-property-simple-relation.html">
+
+<dom-module id="bezweck-case-property-form">
+    <template>
+        <style></style>
+        <h2>Anwesen</h2>
+
+        <bezweck-property-simple-relation
+            data="{{prop}}"
+            source-url="http://demo6512140.mockable.io/keepers"
+            text-property="lastname"
+            value-property="id"
+            preload></bezweck-property-simple-relation>
+    </template>
+    <br>
+
+    <script>
+        class BezweckCasePropertyForm extends Polymer.Element {
+            static get is() {
+                return 'bezweck-case-property-form';
+            }
+
+            static get properties() {
+                return {
+                    prop: {
+                        type: Object,
+                        value() {
+                            return {}
+                        }
+                    }
+                }
+            }
+        }
+
+        customElements.define(BezweckCasePropertyForm.is, BezweckCasePropertyForm);
+    </script>
+</dom-module>

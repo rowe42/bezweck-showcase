@@ -1,0 +1,167 @@
+<script>
+    /**
+     * Behavior, um einem beliebigen Formular (Update, Create, Read) alle Eigenschaften
+     * wie Properties und Methoden zu geben, die es benötigt um mit dem Server zu 
+     * kommunizieren.
+     * 
+     * @polymerMixinClass
+     */
+    /* @polymerMixin */
+    let AnimadFormBehavior = (superClass) => class extends superClass {
+
+        static get properties() {
+            return {
+                /**
+                 * Url um die Formulardaten zu laden.
+                 */
+                getUrl: {
+                    type: String
+                },
+                /**
+                 * Url an die die Formulardaten gesendet werden.
+                 */
+                postUrl: {
+                    type: String
+                },
+                /**
+                 * Das leere Objekt.
+                 *   
+                 * @type{}
+                 */
+                data: {
+                    type: Object,
+                    notify: true,
+                    value() {
+                        return {}
+                    }
+                },
+                /**
+                 *
+                 */
+                _error: {
+                    type: String
+                },
+                /**
+                 *
+                 */
+                _errorToast: {
+                    type: Object,
+                    value() {
+                        return document.querySelector('#global_error_toast');
+                    }
+                },
+                /**
+                 *
+                 */
+                _successToast: {
+                    type: Object,
+                    value() {
+                        return document.querySelector('#global_success_toast');
+                    }
+                },
+                /**
+                 *
+                 */
+                 _warningToast: {
+                    type: Object,
+                    value() {
+                        return document.querySelector('#global_warning_toast');
+                    }
+                }
+            }
+        }
+
+        /**
+         * Validiert die Formulardaten. Danach werden sie an die angegebene
+         * URL als JSON Objekt gesendet.
+         */
+        _sendForm() {
+            // check if the formcontent is valid against the defined rules
+            var valid = this.shadowRoot.querySelector('#iform').validate();
+
+            if (valid) {
+                // console print TODO delete this
+                this.foo = JSON.stringify(this.data);
+                console.log("form is valid: " + this.foo);
+
+                // prepare request
+                var init = {
+                    method: 'POST',
+                    mode: 'cors',
+                    body: JSON.stringify(this.data)
+                }
+
+                var request = new Request(this.postUrl, init);
+
+                fetch(request)
+                    .then(response => {
+                        if (response.ok) {
+                            this._resetForm();
+                            this._success(response.json());
+                        } else {
+                            this._error(response.status);
+                        }
+                    })
+            } else {
+                console.log("form is not valid...");
+                this._warningToast.text = this.t('form_validation');
+                this._warningToast.open();
+            }
+
+        }
+
+        /*
+         * Lädt die Daten über die definierte URL. Die Daten
+         * werden im Property 'data' gespeichert.
+         */
+        _loadFormData() {
+            var init = {
+                method: 'GET',
+                // headers
+                mode: 'cors',
+                cache: 'default'
+            };
+
+            // create request object
+            var request = new Request(this.getUrl, init);
+
+            // call the server
+            fetch(request)
+            .then(response => {
+                if(response.ok) {
+                    //console.log(response);
+                    response.json().then(body => {
+                        // Bei Erfolg werden die Daten, die vom Server kommen 
+                        // im 'data' Property gespeichert.
+                        this.set('data', body);
+                    }) 
+                } else {
+                    this._error(response.status);
+                }
+            })
+        }
+
+        /**
+         * Setzt das Formular zurück.
+         */
+        _resetForm() {
+            this.shadowRoot.querySelector('#iform').reset();
+        }
+
+        /**
+         * Der 'Toast', der bei Erfolg angezeigt wird.
+         */
+        _success(result) {
+            this._successToast.text = this.t('form_success');
+            this._successToast.open();
+        }
+
+        /**
+         * Der 'Toast', der bei Fehlern angezeigt wird.
+         */
+        _error(status) {
+            this._errorToast.text = this.t('form_error', {code: status});
+            this._errorToast.open();
+        }
+    };
+</script>
